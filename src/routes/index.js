@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bookController = require('../controllers/bookController');
+const bookRoutes = require('./bookRoutes');
 const checkoutController = require('../controllers/checkoutController');
 const orderRoutes = require('./orderRoutes');
 
@@ -9,9 +9,7 @@ router.get('/', (req, res) => {
   res.json({ message: 'API Bookstore funcionando 🎉' });
 });
 
-// Ruta para obtener todos los libros
-router.get('/books', bookController.getAllBooks);
-router.post('/books', bookController.createBook);
+router.use('/books', bookRoutes);
 
 router.post('/checkout', checkoutController.processCheckout);
 

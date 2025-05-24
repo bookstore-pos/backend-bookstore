@@ -1,26 +1,26 @@
 function mapOrderToDTO(order) {
-    const items = order.details.map(detail => ({
-      book_id: detail.book.id,
-      name: detail.book.name,
-      quantity: detail.quantity,
-      price: parseFloat(detail.price)
-    }));
-  
-    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  
     return {
-      order_id: order.id,
+      id: order.id,
       voucher_type: order.voucher_type,
-      voucher_number: order.voucher_number,
+      voucher_number: order.voucher_number || null,
+      voucher_pdf: order.voucher_pdf || null,
       client: {
-        full_name: `${order.client.first_name} ${order.client.last_name}`,
         doc_type: order.client.doc_type,
         doc_number: order.client.doc_number,
+        full_name: `${order.client.first_name} ${order.client.last_name}`,
+        phone: order.client.phone,
         email: order.client.email
       },
-      items,
-      total: Number(total.toFixed(2))
+      details: order.details.map(detail => ({
+        book_id: detail.book.id,
+        title: detail.book.name,
+        price: Number(detail.price).toFixed(2),
+        quantity: detail.quantity,
+        subtotal: (Number(detail.price) * detail.quantity).toFixed(2)
+      }))
     };
   }
   
-  module.exports = { mapOrderToDTO };
+  module.exports = {
+    mapOrderToDTO
+  };
