@@ -36,14 +36,18 @@ exports.listOrders = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
   
-    const paginationValidation = validatePagination(page, limit);
-    if (!paginationValidation.success) {
-      return res.status(400).json({ error: paginationValidation.message });
-    }
-  
     try {
-      const orders = await orderService.getAllOrders(skip, limit);
-      res.status(200).json(orders.map(mapOrderToDTO));
+      const { orders, totalItems, totalPages } = await orderService.getAllOrders(skip, limit);
+  
+      res.status(200).json({
+        meta: {
+          totalItems,
+          totalPages,
+          currentPage: page,
+          perPage: limit
+        },
+        data: orders.map(mapOrderToDTO)
+      });
     } catch (error) {
       console.error('Error listando órdenes:', error);
       res.status(500).json({ error: 'Error interno al obtener órdenes' });

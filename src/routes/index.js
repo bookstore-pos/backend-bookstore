@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
+
 const bookRoutes = require('./bookRoutes');
-const checkoutController = require('../controllers/checkoutController');
+const checkoutRoutes = require('./checkoutRoutes');
 const orderRoutes = require('./orderRoutes');
 
 // Ruta básica para prueba
@@ -10,9 +11,7 @@ router.get('/', (req, res) => {
 });
 
 router.use('/books', bookRoutes);
-
-router.post('/checkout', checkoutController.processCheckout);
-
+router.use('/checkout', checkoutRoutes);
 router.use('/orders', orderRoutes);
 
 module.exports = router;
