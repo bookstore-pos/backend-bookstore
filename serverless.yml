@@ -1,0 +1,16 @@
+service: bookstore-backend
+
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+
+functions:
+  app:
+    handler: src/app.handler
+    events:
+      - httpApi: '*'
+
+plugins:
+  - serverless-offline
