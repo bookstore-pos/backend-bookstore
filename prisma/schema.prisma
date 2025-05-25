@@ -6,10 +6,52 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+
+model Client {
+  id         Int     @id @default(autoincrement())
+  doc_type   String  @db.Char(1)
+  doc_number String  @unique
+  first_name String
+  last_name  String
+  phone      String
+  email      String
+  orders     Order[]
+}
+
+model Book {
+  id     Int     @id @default(autoincrement())
+  isbn   String  @db.Char(13) @unique
+  name   String
+  stock  Int
+  price  Decimal @db.Decimal(10, 2)
+  image  String
+  details Detail[]
+}
+
+model Order {
+  id             Int     @id @default(autoincrement())
+  client_id      Int
+  client         Client  @relation(fields: [client_id], references: [id])
+  voucher_type   String  @db.Char(1)
+  voucher_number String?
+  voucher_pdf    String?
+  details        Detail[]
+}
+
+model Detail {
+  id       Int     @id @default(autoincrement())
+  order_id Int
+  book_id  Int
+  price    Decimal @db.Decimal(10, 2)
+  quantity Int
+
+  order Order @relation(fields: [order_id], references: [id])
+  book  Book  @relation(fields: [book_id], references: [id])
 }
