@@ -17,7 +17,7 @@ API RESTful para gestionar libros, clientes, órdenes y procesos de checkout en 
 ## 📦 Instalación
 
 ```bash
-git clone https://github.com/tu-usuario/bookstore-pos.git
+git clone https://github.com/bookstore-pos/backend-bookstore.git
 cd backend-bookstore
 npm install
 npx prisma generate

@@ -30,3 +30,24 @@ exports.createBook = async (req, res) => {
     res.status(500).json({ error: 'Error interno al crear el libro' });
   }
 };
+
+exports.searchBooks = async (req, res) => {
+  try {
+    const { name, isbn } = req.query;
+
+    if (!name && !isbn) {
+      return res.status(400).json({ error: 'Debe proporcionar al menos name o isbn' });
+    }
+
+    const books = await bookService.searchBooks({ name, isbn });
+
+    if (!books.length) {
+      return res.status(404).json({ error: 'No se encontraron libros.' });
+    }
+
+    res.status(200).json(formatBookList(books));
+  } catch (error) {
+    console.error('Error al buscar libros:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
