@@ -26,4 +26,6 @@ app.use(async (req, res, next) => {
 app.locals.prisma = prisma;
 app.use('/api', routes);
 
-module.exports.handler = serverless(app);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`🚀 Backend Bookstore escuchando en el puerto ${process.env.PORT || 3000}`);
+});
